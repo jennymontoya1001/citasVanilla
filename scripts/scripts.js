@@ -117,17 +117,38 @@ listarCita.addEventListener('click', e => {
 
 })
 
+//9.)Buscador
+//capturamos el botón buscar
+let buscar = document.getElementById('btnBuscar');
+// capturamos el div en donde vamos a mostrar la data que busquemos
+let busqueda = document.getElementById('busqueda');
 
+//10.) llamaos el evento clic del botón buscar
 buscar.addEventListener('click', e => {
     e.preventDefault();
-    let input = document.getElementById('inputBuscar').value;
-    let data = JSON.parse(localStorage.getItem('Citas'));
+    //capturamos el texto ingresado en la caja de texto para buscar
+    let input = document.getElementById('inputBuscar').value; //lo que voy a buscar
+    //traemos la data del local storage
+    //dentro de la búsqueda de información,e s importante tener presente dos cosas
+    //1.) lo que voy a buscar
+    //2.) en donde lo voy a buscar
+    let data = JSON.parse(localStorage.getItem('Citas')); // en donde lo voy a buscar
+    //función filter, nos devuelve un arreglo con lo encontrado, al retornar un arrar, puede devolver varios objetos que coindidan
+    //la función includes, nos permite buscar las coincidencias y no el valo exacto
+    //la función toLowerCase, es como la función toLocaleLoweCase, nos permite convertir el texto todo en minúsculas
+    //también está la función toUpperCase, toLocaleUpperCase, que cambia a mayúsculas
     let filtro = data.filter(cita => cita.nombre.toLowerCase().includes(input.toLowerCase()))
+    //limpiamos el div
     busqueda.innerHTML = '';
 
+    //tomamos el arreglo filtro que contiene la información que coincida con la búsqueda que realizaste
+    //vamos a validar con un condicional ternario (estos nos permiten validar en términos de expresiones)
+    //validamos que si es arreglo no tiene nada filtro.length(longitud del array)
     filtro.length === 0 ?
+    //nos muestre un diz indicando que lo ingresado no existe
         busqueda.innerHTML += `<div style="color:white;">El nombre ${input} no existe</div>`
         :
+        //en caso contrario, nos va a recorrer filtro, desestructuramos y mostramos lo filtrado
         (
             filtro.map(cita => {
                 const { nombre, fecha, hora, sintomas } = cita;
